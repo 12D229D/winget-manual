@@ -1,0 +1,582 @@
+/* ============================================================
+   Manual de Winget — Hoja de estilos (Vanilla CSS)
+   Paleta HSL premium · glassmorphism · modo claro/oscuro
+   ============================================================ */
+
+/* ---------- Reset mínimo ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------- Variables: tema oscuro (por defecto) ---------- */
+:root,
+[data-theme="dark"] {
+    --fondo-base: hsl(210 40% 8%);
+    --fondo-gradiente-1: hsl(210 45% 9%);
+    --fondo-gradiente-2: hsl(200 50% 14%);
+    --texto: hsl(200 25% 92%);
+    --texto-suave: hsl(200 20% 70%);
+    --acento: hsl(190 80% 55%);
+    --acento-hover: hsl(190 85% 65%);
+    --acento-suave: hsl(190 60% 45% / 0.15);
+    --vidrio-bg: hsl(210 40% 12% / 0.6);
+    --vidrio-borde: hsl(190 60% 60% / 0.12);
+    --codigo-bg: hsl(210 45% 6%);
+    --codigo-borde: hsl(190 80% 55% / 0.5);
+    --sombra: hsl(210 50% 3% / 0.55);
+    --sombra-suave: hsl(210 50% 3% / 0.25);
+    --input-bg: hsl(210 40% 12% / 0.55);
+    --enlace: hsl(190 85% 65%);
+    --ocupacion: hsl(190 80% 55%);
+}
+
+/* ---------- Variables: tema claro ---------- */
+[data-theme="light"] {
+    --fondo-base: hsl(200 30% 97%);
+    --fondo-gradiente-1: hsl(200 35% 96%);
+    --fondo-gradiente-2: hsl(190 40% 90%);
+    --texto: hsl(210 35% 14%);
+    --texto-suave: hsl(210 20% 38%);
+    --acento: hsl(195 70% 42%);
+    --acento-hover: hsl(195 75% 35%);
+    --acento-suave: hsl(195 70% 50% / 0.12);
+    --vidrio-bg: hsl(0 0% 100% / 0.7);
+    --vidrio-borde: hsl(195 60% 50% / 0.18);
+    --codigo-bg: hsl(210 30% 96%);
+    --codigo-borde: hsl(195 70% 42% / 0.55);
+    --sombra: hsl(210 30% 50% / 0.15);
+    --sombra-suave: hsl(210 30% 50% / 0.08);
+    --input-bg: hsl(0 0% 100% / 0.7);
+    --enlace: hsl(195 75% 38%);
+    --ocupacion: hsl(195 70% 42%);
+}
+
+/* ---------- Base ---------- */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--texto);
+    background: var(--fondo-base);
+    background-image:
+        radial-gradient(circle at 15% 10%, var(--fondo-gradiente-2), transparent 45%),
+        radial-gradient(circle at 85% 0%, var(--acento-suave), transparent 40%),
+        linear-gradient(180deg, var(--fondo-gradiente-1), var(--fondo-base) 60%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+}
+
+a {
+    color: var(--enlace);
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+a:hover {
+    color: var(--acento-hover);
+    text-decoration: underline;
+}
+
+code {
+    font-family: "JetBrains Mono", ui-monospace, "Consolas", monospace;
+    font-size: 0.92em;
+    background: var(--acento-suave);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    color: var(--acento-hover, var(--acento));
+}
+
+/* ---------- Skip-link accesible ---------- */
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    z-index: 1000;
+    padding: 0.6rem 1rem;
+    background: var(--acento);
+    color: hsl(210 40% 8%);
+    font-weight: 600;
+    border-radius: 0 0 8px 0;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* ---------- Cabecera (glass) ---------- */
+.cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1.2rem, 5vw, 3rem);
+    background: var(--vidrio-bg);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-bottom: 1px solid var(--vidrio-borde);
+    box-shadow: 0 8px 32px var(--sombra-suave);
+}
+
+.cabecera__titulo h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    background: linear-gradient(135deg, var(--acento), hsl(160 70% 60%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.cabecera__subtitulo {
+    margin-top: 0.15rem;
+    font-size: clamp(0.85rem, 1.6vw, 1rem);
+    color: var(--texto-suave);
+    font-weight: 500;
+}
+
+/* ---------- Botón de tema ---------- */
+.theme-toggle {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--vidrio-borde);
+    background: var(--vidrio-bg);
+    color: var(--texto);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    backdrop-filter: blur(8px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(-15deg) scale(1.08);
+    box-shadow: 0 6px 18px var(--acento-suave);
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+}
+
+/* ---------- Layout principal (grid) ---------- */
+.layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem clamp(1.2rem, 5vw, 3rem);
+    align-items: start;
+}
+
+/* ---------- Tabla de contenidos ---------- */
+.toc {
+    position: sticky;
+    top: 6rem;
+    padding: 1.4rem 1.2rem;
+    background: var(--vidrio-bg);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px var(--sombra-suave);
+}
+
+.toc__titulo {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--texto-suave);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.toc__lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.toc__lista a {
+    display: block;
+    padding: 0.4rem 0.7rem;
+    color: var(--texto-suave);
+    font-size: 0.92rem;
+    border-radius: 8px;
+    border-left: 2px solid transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.toc__lista a:hover {
+    background: var(--acento-suave);
+    color: var(--texto);
+    transform: translateX(3px);
+    text-decoration: none;
+}
+
+.toc__lista a.activo {
+    color: var(--acento-hover);
+    border-left-color: var(--ocupacion);
+    background: var(--acento-suave);
+    font-weight: 600;
+}
+
+/* ---------- Contenido ---------- */
+.contenido {
+    min-width: 0; /* evita desbordamiento del grid */
+}
+
+.seccion {
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 6rem;
+}
+
+.seccion > h2 {
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--vidrio-borde);
+    color: var(--texto);
+}
+
+.seccion > p {
+    margin-bottom: 1rem;
+    color: var(--texto);
+}
+
+.lista {
+    list-style: none;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.lista li {
+    padding-left: 1.4rem;
+    position: relative;
+    color: var(--texto);
+}
+
+.lista li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--ocupacion);
+    font-weight: 700;
+}
+
+/* ---------- Card de comando (glass) ---------- */
+.comando {
+    background: var(--vidrio-bg);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 32px var(--sombra-suave);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    animation: aparecer 0.5s ease both;
+}
+
+.comando:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px var(--sombra);
+    border-color: var(--codigo-borde);
+}
+
+.comando h3 {
+    font-size: 1.05rem;
+    color: var(--acento-hover);
+    margin-bottom: 0.35rem;
+}
+
+.comando p {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+/* ---------- Bloque de código ---------- */
+.comando pre {
+    position: relative;
+    background: var(--codigo-bg);
+    border: 1px solid var(--vidrio-borde);
+    border-left: 3px solid var(--codigo-borde);
+    border-radius: 10px;
+    padding: 1rem 4rem 1rem 1.1rem;
+    overflow-x: auto;
+    box-shadow: inset 0 1px 0 var(--vidrio-borde);
+}
+
+.comando pre code {
+    background: none;
+    padding: 0;
+    color: var(--texto);
+    font-family: "JetBrains Mono", ui-monospace, "Consolas", monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre;
+    display: block;
+}
+
+/* ---------- Botón copiar ---------- */
+.copiar {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    color: var(--texto);
+    background: var(--vidrio-bg);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: 7px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.comando pre:hover .copiar,
+.copiar:focus-visible {
+    opacity: 1;
+}
+
+.copiar:hover {
+    background: var(--acento);
+    color: hsl(210 40% 8%);
+    transform: translateY(-1px);
+}
+
+.copiar:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+}
+
+.copiar.copiado {
+    background: hsl(150 70% 45%);
+    color: hsl(0 0% 100%);
+    border-color: transparent;
+    opacity: 1;
+}
+
+/* ---------- Buscador ---------- */
+.buscador-seccion {
+    margin-bottom: 2rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--vidrio-bg);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px var(--sombra-suave);
+}
+
+.buscador__label {
+    display: block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--texto-suave);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.buscador__input {
+    width: 100%;
+    padding: 0.85rem 1.1rem;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    color: var(--texto);
+    background: var(--input-bg);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.buscador__input::placeholder {
+    color: var(--texto-suave);
+    opacity: 0.7;
+}
+
+.buscador__input:focus {
+    outline: none;
+    border-color: var(--acento);
+    box-shadow: 0 0 0 3px var(--acento-suave);
+}
+
+.buscador__ayuda {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+}
+
+/* ---------- Mensaje sin resultados ---------- */
+.sin-resultados {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--texto-suave);
+    background: var(--acento-suave);
+    border: 1px dashed var(--vidrio-borde);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+/* ---------- Lista de opciones (dl) ---------- */
+.opciones {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.opciones__item {
+    padding: 1rem 1.2rem;
+    background: var(--vidrio-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.opciones__item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px var(--sombra-suave);
+}
+
+.opciones dt {
+    font-weight: 700;
+    color: var(--acento-hover);
+    margin-bottom: 0.3rem;
+}
+
+.opciones dd {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+/* ---------- Pie ---------- */
+.pie {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--texto-suave);
+    font-size: 0.88rem;
+    border-top: 1px solid var(--vidrio-borde);
+    background: var(--vidrio-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.pie p {
+    margin-bottom: 0.3rem;
+}
+
+.pie__version {
+    font-size: 0.78rem;
+    opacity: 0.75;
+}
+
+/* ---------- Animación de aparición ---------- */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Focus visible global ---------- */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .toc {
+        position: static;
+        order: 2;
+    }
+
+    .contenido {
+        order: 1;
+    }
+}
+
+@media (max-width: 600px) {
+    .cabecera {
+        flex-wrap: wrap;
+        padding: 0.9rem 1rem;
+    }
+
+    .cabecera__subtitulo {
+        display: none;
+    }
+
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .comando pre {
+        padding: 1rem 1.1rem 3.5rem;
+    }
+
+    .copiar {
+        opacity: 1; /* en móvil siempre visible */
+        top: auto;
+        bottom: 0.7rem;
+        right: 0.7rem;
+    }
+
+    .layout {
+        padding: 1.2rem 1rem;
+    }
+}
+
+/* ---------- Respeto a la preferencia de movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

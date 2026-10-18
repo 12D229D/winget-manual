@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO primario -->
+    <title>Manual de Winget · Guía completa del Windows Package Manager</title>
+    <meta name="description" content="Manual de referencia en español de Winget (Windows Package Manager): qué es, cómo instalarlo, comandos básicos y avanzados (search, install, upgrade, list, source, hash, settings) con ejemplos prácticos y tabla de contenidos navegable.">
+    <meta name="keywords" content="winget, Windows Package Manager, CLI, instalador, microsoft, comandos, terminal, powershell, cmd">
+    <meta name="author" content="Codex">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://github.com/microsoft/winget-cli">
+    <meta name="theme-color" content="#0a1018">
+    <meta name="color-scheme" content="dark light">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:title" content="Manual de Winget · Guía completa del Windows Package Manager">
+    <meta property="og:description" content="Guía completa de Winget: instalación, comandos básicos y avanzados, opciones y solución de problemas.">
+    <meta property="og:url" content="https://github.com/microsoft/winget-cli">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Manual de Winget · Guía completa">
+    <meta name="twitter:description" content="Guía completa de Winget: instalación, comandos, opciones y solución de problemas.">
+
+    <!-- Favicon SVG embebido (terminal) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a1018'/%3E%3Cpath d='M20 35 L35 50 L20 65' stroke='%2338d9d9' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cline x1='45' y1='68' x2='75' y2='68' stroke='%2338d9d9' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+
+    <!-- Google Fonts: Inter (texto) + JetBrains Mono (código) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Hoja de estilos propia (Vanilla CSS) -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Datos estructurados JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Manual de Winget · Guía completa del Windows Package Manager",
+        "description": "Guía de referencia en español del Windows Package Manager (Winget) con instalación, comandos básicos y avanzados, opciones y solución de problemas.",
+        "inLanguage": "es",
+        "author": { "@type": "Organization", "name": "Codex" },
+        "about": { "@type": "SoftwareApplication", "name": "Winget", "operatingSystem": "Windows" }
+    }
+    </script>
+</head>
+<body>
+    <a href="#contenido" class="skip-link">Saltar al contenido principal</a>
+
+    <header class="cabecera">
+        <div class="cabecera__titulo">
+            <h1>Manual de Winget</h1>
+            <p class="cabecera__subtitulo">Guía completa del Windows Package Manager</p>
+        </div>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema claro/oscuro" aria-pressed="false" title="Cambiar tema">
+            <span class="theme-toggle__icono" aria-hidden="true">🌙</span>
+        </button>
+    </header>
+
+    <div class="layout">
+        <nav aria-label="Tabla de contenidos" id="toc" class="toc">
+            <h2 class="toc__titulo">Contenido</h2>
+            <ul class="toc__lista">
+                <li><a href="#que-es">¿Qué es Winget?</a></li>
+                <li><a href="#instalacion">Instalación</a></li>
+                <li><a href="#basicos">Comandos básicos</a></li>
+                <li><a href="#avanzados">Comandos avanzados</a></li>
+                <li><a href="#opciones">Opciones comunes</a></li>
+                <li><a href="#ejemplos">Ejemplos prácticos</a></li>
+                <li><a href="#solucion">Solución de problemas</a></li>
+            </ul>
+        </nav>
+
+        <main id="contenido" class="contenido">
+            <section class="buscador-seccion">
+                <label for="buscar-comandos" class="buscador__label">Filtrar comandos</label>
+                <input type="search" id="buscar-comandos" class="buscador__input" placeholder="Ej: install, upgrade --all, source…" aria-describedby="buscador-ayuda">
+                <p id="buscador-ayuda" class="buscador__ayuda">Filtra por nombre de comando, descripción u opciones.</p>
+            </section>
+
+            <p id="sin-resultados" class="sin-resultados" hidden>No se encontraron comandos que coincidan con «<span id="sin-resultados-termino"></span>».</p>
+
+            <!-- ¿Qué es Winget? -->
+            <section id="que-es" class="seccion">
+                <h2>¿Qué es Winget?</h2>
+                <p>Winget (Windows Package Manager) es una utilidad de línea de comandos de código abierto que permite descubrir, instalar, actualizar, eliminar y configurar aplicaciones en dispositivos Windows 10 y Windows 11. Es el equivalente en Windows a herramientas como <code>apt</code> en Ubuntu o <code>Homebrew</code> en macOS.</p>
+            </section>
+
+            <!-- Instalación -->
+            <section id="instalacion" class="seccion">
+                <h2>Instalación de Winget</h2>
+                <p>Winget suele venir preinstalado en las versiones modernas de Windows 10 y 11 como parte del <strong>Instalador de Aplicaciones</strong> de Microsoft Store. Si no lo tienes, puedes instalarlo así:</p>
+                <ul class="lista">
+                    <li>Descargando el paquete desde la página de <a href="https://github.com/microsoft/winget-cli/releases" target="_blank" rel="noopener noreferrer">lanzamientos de Winget CLI en GitHub</a>.</li>
+                    <li>Actualizando la aplicación <strong>Instalador de Aplicaciones</strong> desde la Microsoft Store.</li>
+                </ul>
+                <article class="comando" data-cmd="winget --version">
+                    <h3>Verificar la instalación</h3>
+                    <p>Comprueba que Winget está disponible y consulta su versión.</p>
+                    <pre><code>winget --version</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+            </section>
+
+            <!-- Comandos básicos -->
+            <section id="basicos" class="seccion">
+                <h2>Comandos básicos</h2>
+
+                <article class="comando" data-cmd="winget search">
+                    <h3>Buscar paquetes</h3>
+                    <p>Busca aplicaciones disponibles en los repositorios (orígenes) configurados en Winget.</p>
+                    <pre><code>winget search <aplicacion></code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget install">
+                    <h3>Instalar un paquete</h3>
+                    <p>Instala una aplicación específica desde el origen predeterminado.</p>
+                    <pre><code>winget install <aplicacion></code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget show">
+                    <h3>Mostrar detalles de un paquete</h3>
+                    <p>Obtiene información detallada sobre un paquete: versión, editor, descripción y página de inicio.</p>
+                    <pre><code>winget show <aplicacion></code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget upgrade winget upgrade --all">
+                    <h3>Actualizar paquetes</h3>
+                    <p>Actualiza una aplicación instalada o, con <code>--all</code>, todas las que Winget puede gestionar.</p>
+                    <pre><code>winget upgrade <aplicacion>
+winget upgrade --all</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget uninstall">
+                    <h3>Desinstalar un paquete</h3>
+                    <p>Elimina una aplicación instalada previamente con Winget o detectada en el sistema.</p>
+                    <pre><code>winget uninstall <aplicacion></code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget list">
+                    <h3>Listar paquetes instalados</h3>
+                    <p>Muestra todas las aplicaciones instaladas y cuáles tienen actualizaciones disponibles.</p>
+                    <pre><code>winget list</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+            </section>
+
+            <!-- Comandos avanzados -->
+            <section id="avanzados" class="seccion">
+                <h2>Comandos avanzados</h2>
+
+                <article class="comando" data-cmd="winget source winget source list winget source add winget source remove">
+                    <h3>Gestionar orígenes (source)</h3>
+                    <p>Lista, añade o elimina repositorios de paquetes adicionales.</p>
+                    <pre><code>winget source list
+winget source add --name <nombre> --arg <url>
+winget source remove --name <nombre></code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget hash">
+                    <h3>Generar hash de paquete</h3>
+                    <p>Calcula el hash SHA256 de un instalador, necesario para crear manifestos de paquetes.</p>
+                    <pre><code>winget hash <ruta-instalador></code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget settings">
+                    <h3>Configurar Winget</h3>
+                    <p>Abre el archivo de configuración <code>settings.json</code> para personalizar orígenes, comportamiento y visualización.</p>
+                    <pre><code>winget settings</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget export winget import">
+                    <h3>Exportar e importar paquetes</h3>
+                    <p>Exporta la lista de aplicaciones instaladas a un JSON o restaura esa lista en otra máquina.</p>
+                    <pre><code>winget export -o paquetes.json
+winget import -i paquetes.json</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+            </section>
+
+            <!-- Opciones comunes -->
+            <section id="opciones" class="seccion">
+                <h2>Opciones comunes</h2>
+                <p>Estas opciones pueden combinarse con <code>install</code>, <code>upgrade</code>, <code>uninstall</code> y otros comandos:</p>
+                <dl class="opciones">
+                    <div class="opciones__item">
+                        <dt><code>--id</code></dt>
+                        <dd>Identifica el paquete por su identificador único (más preciso que el nombre).</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt><code>--exact</code></dt>
+                        <dd>Exige coincidencia exacta con el nombre o id indicado (sin búsqueda difusa).</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt><code>--silent</code></dt>
+                        <dd>Instala sin interfaz gráfica del instalador (modo desatendido).</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt><code>--scope</code></dt>
+                        <dd>Define el ámbito de instalación: <code>user</code> (usuario) o <code>machine</code> (todos).</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt><code>-e</code> / <code>-h</code></dt>
+                        <dd>Forma corta de <code>--exact</code> y <code>--silent</code> respectivamente.</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <!-- Ejemplos prácticos -->
+            <section id="ejemplos" class="seccion">
+                <h2>Ejemplos prácticos</h2>
+
+                <article class="comando" data-cmd="winget search VLC">
+                    <h3>Buscar VLC Media Player</h3>
+                    <p>Encuentra el paquete de VLC en el origen predeterminado.</p>
+                    <pre><code>winget search VLC</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget install --id Microsoft.VisualStudioCode --exact --silent">
+                    <h3>Instalar Visual Studio Code</h3>
+                    <p>Instalación silenciosa identificando el paquete por su id exacto.</p>
+                    <pre><code>winget install --id Microsoft.VisualStudioCode --exact --silent</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget upgrade --all --silent">
+                    <h3>Actualizar todas las aplicaciones</h3>
+                    <p>Actualiza todo el software gestionado por Winget en modo desatendido.</p>
+                    <pre><code>winget upgrade --all --silent</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+
+                <article class="comando" data-cmd="winget uninstall --id VideoLAN.VLC --exact">
+                    <h3>Desinstalar por id exacto</h3>
+                    <p>Elimina VLC indicando su identificador único para evitar ambigüedades.</p>
+                    <pre><code>winget uninstall --id VideoLAN.VLC --exact</code><button type="button" class="copiar" aria-label="Copiar comando al portapapeles">Copiar</button></pre>
+                </article>
+            </section>
+
+            <!-- Solución de problemas -->
+            <section id="solucion" class="seccion">
+                <h2>Solución de problemas</h2>
+                <dl class="opciones">
+                    <div class="opciones__item">
+                        <dt>«El término winget no se reconoce»</dt>
+                        <dd>Actualiza el <strong>Instalador de Aplicaciones</strong> desde la Microsoft Store o instala Winget desde <a href="https://github.com/microsoft/winget-cli/releases" target="_blank" rel="noopener noreferrer">GitHub releases</a>.</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt>Error al instalar por nombre ambiguo</dt>
+                        <dd>Usa <code>--id <Paquete.Id> --exact</code> para acotar el paquete.</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt>Falla la actualización de un paquete</dt>
+                        <dd>Ejecuta <code>winget upgrade <aplicacion> --include-unknown</code> para incluir versiones desconocidas.</dd>
+                    </div>
+                    <div class="opciones__item">
+                        <dt>El comando es demasiado lento</dt>
+                        <dd>Comprueba el origen con <code>winget source list</code> y elimina los que no necesites.</dd>
+                    </div>
+                </dl>
+            </section>
+        </main>
+    </div>
+
+    <footer class="pie">
+        <p>Manual de Winget · Recurso educativo en español.</p>
+        <p>Referencia oficial: <a href="https://github.com/microsoft/winget-cli" target="_blank" rel="noopener noreferrer">github.com/microsoft/winget-cli</a></p>
+        <p class="pie__version">Última actualización: 2026-07-28</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
